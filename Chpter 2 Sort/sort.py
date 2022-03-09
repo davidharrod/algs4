@@ -34,7 +34,28 @@ def insertion_sort(array):
     return array
 
 
+def shell_sort(array):
+    """Use 3x + 1 as sequence."""
+    N = len(array)
+    h = 1
+    while(h < N/3):
+        h = 3*h+1  # Calculate h according to 3x + 1 sequence.
+    while h >= 1:
+        p, q = 0, 0
+        while p < N-h:
+            q = p+h
+            while q >= h:
+                if is_less(array[q], array[q-h]):
+                    exchange(array, q, q-h)
+                    q -= h
+                else:
+                    break
+            p += 1
+        h = int(h/3)
+    return array
+
+
 if __name__ == '__main__':
-    array = [21, 23, 213, 123, 15, 23, 5, 23, 46, 43, 5,
-             7, 9, 57, 6, 3, 5, 423, 42, 4, 3141, 34141343124]
-    print(selection_sort(array))
+    array = [231112, 3, 21, 423, 534, 56, 5, 7,
+             65, 7, 5678, 67, 987, 97809, 780, 890, 2]
+    print(shell_sort(array))
