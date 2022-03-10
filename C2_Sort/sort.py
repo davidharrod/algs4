@@ -35,7 +35,8 @@ def insertion_sort(array):
 
 
 def shell_sort(array):
-    """Use 3x + 1 as sequence."""
+    """Use 3x + 1 as sequence. The only difference 
+    between shell and insertion is that shell look back at h positions."""
     N = len(array)
     h = 1
     while(h < N/3):
@@ -58,28 +59,33 @@ def shell_sort(array):
 def merge_sort(array):
     def merge(array1, array2):
         p, q = 0, 0
-        result_array = (len(array1)+len(array2))*[None]
+        result_array = (len(array1)+len(array2))*[0]
         for _ in range(len(result_array)):
-            if p > len(array1):
+            if p == len(array1):
                 result_array[_] = array2[q]
                 q += 1
                 continue
-            if q > len(array2):
+            if q == len(array2):
                 result_array[_] = array1[p]
                 p += 1
                 continue
-            if array1[p] > array[q]:
+            if is_less(array1[p], array2[q]):
                 result_array[_] = array1[p]
                 p += 1
             else:
                 result_array[_] = array2[q]
                 q += 1
+        return result_array
+
     if len(array) == 2:
-        if is_less(array[0], array[1]):
+        if not is_less(array[0], array[1]):
             exchange(array, 0, 1)
-            return None
+        return array
+    elif len(array) < 2:
+        return array
+
     low = 0
-    high = len(array)-1
+    high = len(array)  # (a,b]
     mid = int((high-low)/2)
     sub_array1 = merge_sort(array[low:mid])
     sub_array2 = merge_sort(array[mid:high])
@@ -88,6 +94,6 @@ def merge_sort(array):
 
 
 if __name__ == '__main__':
-    array = [231112, 3, 21, 423, 534, 56, 5, 7,
-             65, 7, 5678, 67, 987, 97809, 780, 890, 2]
+    array = [5, 2, 4, 1, 3, 23, 4, 234, 2354,
+             4, 53, 46, 618, 547, 5, 68, 67, 9, 78]
     print(merge_sort(array))
