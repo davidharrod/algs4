@@ -87,13 +87,40 @@ def merge_sort(array):
     low = 0
     high = len(array)  # (a,b]
     mid = int((high-low)/2)
-    sub_array1 = merge_sort(array[low:mid])
+    sub_array1 = merge_sort(array[low:mid])  # Sort first merge later.
     sub_array2 = merge_sort(array[mid:high])
     result_array = merge(sub_array1, sub_array2)
     return result_array
 
 
+def quick_sort(array, low, high):
+    def partition(array, low, high):
+        partition_val = array[low]
+        partition_pos = low
+        while high > low:
+            while array[high] >= partition_val and high > low:
+                high -= 1
+            while array[low] <= partition_val and high > low:
+                low += 1
+            exchange(array, low, high)
+        exchange(array, partition_pos, low)
+        return low
+
+    # Define return pattern.
+    if low >= high:
+        return None
+
+    # Define recursion pattern.
+    # The position of this value is settled.
+    base_val_pos = partition(array, low, high)
+    quick_sort(array, low, base_val_pos-1)
+    quick_sort(array, base_val_pos+1, high)
+
+    return None
+
+
 if __name__ == '__main__':
-    array = [5, 2, 4, 1, 3, 23, 4, 234, 2354,
-             4, 53, 46, 618, 547, 5, 68, 67, 9, 78]
-    print(merge_sort(array))
+    array = [5, 2, 4, 1, 3, 234, 23, 5, 345,
+             34, 5, 2, 34, 23, 4, 23, 423, 4, 23]
+    quick_sort(array, 0, len(array)-1)
+    print(array)
